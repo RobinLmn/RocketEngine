@@ -2,6 +2,7 @@
 
 #include <Gameplay/Components/Camera.h>
 #include <Gameplay/Components/Mesh.h>
+#include <Gameplay/Components/Material.h>
 #include <Gameplay/Components/Transform.h>
 #include <Gameplay/Components/Light.h>
 
@@ -36,13 +37,17 @@ namespace
     {
         const auto entity = registry->create();
         
-        auto& entityMesh = registry->emplace<MeshPath>(entity);
+        auto& entityMesh = registry->emplace<Model>(entity);
         entityMesh.path = obj;
         
         auto& entityTransform = registry->emplace<Transform>(entity);
         entityTransform.position = {0.f, 0.f, 0.f};
         entityTransform.scale = {1.f, 1.f, 1.f};
         entityTransform.rotation = {0.f, 0.f, 0.f};
+
+        auto& material = registry->emplace<Material>(entity);
+        material.vertexShader = "../RocketEngine/Content/Shaders/Shader.vert";
+        material.fragmentShader = "../RocketEngine/Content/Shaders/Shader.frag";
     }
 
     auto makeLight(entt::registry* registry)
@@ -64,5 +69,18 @@ namespace RocketEngine
     auto Scene::instantiate(entt::registry* registry) -> void
     {
         const auto triangle = registry->create();
+
+        auto& mesh = registry->emplace<StaticMesh>(triangle);
+
+        Vertex a = { {0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f} };
+        Vertex b = { {-0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f} };
+        Vertex c = { {-0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f} };
+
+        mesh.vertices = { a, b, c};
+        mesh.indices = { 0, 1, 2};
+
+        auto& material = registry->emplace<Material>(triangle);
+        material.vertexShader = "../RocketEngine/Content/Shaders/Shader.vert";
+        material.fragmentShader = "../RocketEngine/Content/Shaders/Shader.frag";
     }
 }

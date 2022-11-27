@@ -7,10 +7,10 @@ namespace RocketEngine
     class MeshLoadingSystem final : public System
     {
     public:
-        MeshLoadingSystem(entt::registry* registry);
+        MeshLoadingSystem(World* world);
     
     public:
-        auto begin() -> void override;
+        virtual auto begin() -> void override;
         
     private:
         auto loadMesh(StaticMesh* mesh, const char* path) -> void;

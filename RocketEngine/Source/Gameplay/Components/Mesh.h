@@ -15,10 +15,10 @@ namespace RocketEngine
     struct StaticMesh
     {
         std::vector<Vertex> vertices;
-        std::vector<uint16_t> indices;
+        std::vector<unsigned int> indices;
     };
 
-    struct MeshPath
+    struct Model
     {
         std::string path;
     };

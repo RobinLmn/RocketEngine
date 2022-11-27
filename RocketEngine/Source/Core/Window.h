@@ -12,9 +12,6 @@ namespace RocketEngine
 		auto isOpen() const -> bool;
 		auto processInput() -> void;
 
-		[[nodiscard]]
-		auto getNativeWindow() -> GLFWwindow*;
-
 	private:
 		GLFWwindow* window;
 	};

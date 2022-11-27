@@ -2,8 +2,8 @@
 
 namespace RocketEngine
 {
-    CameraControlSystem::CameraControlSystem(entt::registry* registry)
-        : System(registry)
+    CameraControlSystem::CameraControlSystem(World* world)
+        : System(world)
     {
     }
 

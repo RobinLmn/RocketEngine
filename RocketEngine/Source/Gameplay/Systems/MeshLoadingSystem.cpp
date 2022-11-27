@@ -10,17 +10,16 @@
 
 namespace RocketEngine
 {
-    MeshLoadingSystem::MeshLoadingSystem(entt::registry* registry)
-        : System(registry)
+    MeshLoadingSystem::MeshLoadingSystem(World* world)
+        : System(world)
     {
     }
 
     auto MeshLoadingSystem::begin() -> void
     {
-        const auto entities = registry->view<const MeshPath>().each();
-        for (auto [entity, pathComponent] : entities)
+        for (auto [entity, pathComponent] : world->getEntities<const Model>())
         {
-            auto& mesh = registry->emplace<StaticMesh>(entity);
+            auto& mesh = world->addComponents<StaticMesh>(entity);
             loadMesh(&mesh, pathComponent.path.c_str());
         }
     }

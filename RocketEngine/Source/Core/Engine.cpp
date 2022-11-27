@@ -6,7 +6,7 @@ namespace RocketEngine
     Engine::Engine()
         : world{}
         , window{ 800, 800, "RocketEngine" }
-        , renderer{}
+        , renderer{&world}
     {
     }
 
@@ -19,6 +19,7 @@ namespace RocketEngine
         auto lastTime = clock.now();
 
         world.begin();
+        renderer.begin();
 
         while (window.isOpen())
         {
@@ -27,7 +28,10 @@ namespace RocketEngine
 
             window.processInput();
             world.update(dt);
-            renderer.draw();
+            renderer.draw(dt);
         }
+
+        renderer.end();
+        world.end();
     }
 }

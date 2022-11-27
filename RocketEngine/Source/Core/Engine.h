@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Core/Window.h>
-#include <Gameplay/World.h>
+#include <Core/World.h>
 #include <Renderer/Renderer.h>
 
 namespace RocketEngine
@@ -11,6 +11,7 @@ namespace RocketEngine
 	public:
 		Engine();
 
+	public:
 		auto run() -> void;
 
 	private:

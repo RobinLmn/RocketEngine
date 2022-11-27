@@ -6,9 +6,9 @@ namespace RocketEngine
     class CameraControlSystem final : public System
     {
     public:
-        CameraControlSystem(entt::registry*);
+        CameraControlSystem(World*);
         
     public:
-        auto update(double dt) -> void override;
+        virtual auto update(double dt) -> void override;
     };
 }

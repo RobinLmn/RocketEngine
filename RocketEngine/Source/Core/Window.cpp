@@ -28,25 +28,20 @@ namespace RocketEngine
 		gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	}
 
-	Window::~Window()
-	{
-		glfwDestroyWindow(window);
-		glfwTerminate();
-	}
-
 	auto Window::isOpen() const -> bool
 	{
 		return !glfwWindowShouldClose(window);
-	}
-
-	auto Window::getNativeWindow() -> GLFWwindow*
-	{
-		return window;
 	}
 
 	auto Window::processInput() -> void
 	{
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+	}
+
+	Window::~Window()
+	{
+		glfwDestroyWindow(window);
+		glfwTerminate();
 	}
 }
