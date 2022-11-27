@@ -4,13 +4,14 @@
 #include <Gameplay/Scene.h>
 #include <entt/entity/registry.hpp>
 #include <vector>
+#include <Core/Window.h>
 
 namespace RocketEngine
 {
     class World final
     {
     public:
-        World();
+        World(Window* window);
         ~World();
 
     public:
@@ -25,10 +26,13 @@ namespace RocketEngine
         }
 
         template<typename... T_Component>
-        [[nodiscard]] decltype(auto) inline addComponents(entt::registry::entity_type entity)
+        decltype(auto) inline addComponents(entt::registry::entity_type entity)
         {
             return registry.emplace<T_Component...>(entity);
         }
+
+        auto inline isKeyPressed(int key) -> bool { return window->isKeyPressed(key); }
+        auto inline getAspectRatio() -> bool { return window->getAspectRatio(); }
             
     private:
         template<typename T_System>
@@ -38,5 +42,8 @@ namespace RocketEngine
         entt::registry registry;
         Scene scene;
         std::vector<System*> systems;
+
+        // hacky! fix
+        Window* window;
     };
 }

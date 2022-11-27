@@ -6,10 +6,11 @@
 
 namespace RocketEngine
 {
-    World::World()
+    World::World(Window* window)
         : registry{}
         , scene{}
         , systems{}
+        , window{window}
     {
         addSystem<CameraControlSystem>();
         addSystem<MeshLoadingSystem>();

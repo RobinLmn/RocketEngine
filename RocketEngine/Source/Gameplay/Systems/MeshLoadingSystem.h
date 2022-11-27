@@ -13,6 +13,6 @@ namespace RocketEngine
         virtual auto begin() -> void override;
         
     private:
-        auto loadMesh(StaticMesh* mesh, const char* path) -> void;
+        auto loadMesh(StaticMesh& mesh, const char* path) -> void;
     };
 }

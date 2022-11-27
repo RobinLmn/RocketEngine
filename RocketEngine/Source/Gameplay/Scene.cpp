@@ -14,12 +14,12 @@ namespace
 {
     using namespace RocketEngine;
 
-    auto makeCamera(entt::registry* registry)
+    auto makeCamera(entt::registry* registry) -> void
     {
         const auto cameraEntity = registry->create();
         
         auto& cameraTransform = registry->emplace<Transform>(cameraEntity);
-        cameraTransform.position = {0.f, -0.06f, -12.f};
+        cameraTransform.position = {0.f, 0.f, -15.f};
         cameraTransform.scale = {1.f, 1.f, 1.f};
         cameraTransform.rotation = {0.f, 0.f, 0.f};
         
@@ -29,11 +29,11 @@ namespace
         cameraComponent.far = 100.f;
         cameraComponent.aspect = 1.f;
         cameraComponent.fov = glm::radians(45.f);
-        cameraComponent.speed = 0.1f;
+        cameraComponent.speed = 0.5f;
         cameraComponent.sensitivity = 1.f;
     }
 
-    auto makeObj(entt::registry* registry, const char* obj)
+    auto makeObj(entt::registry* registry, const char* obj) -> void
     {
         const auto entity = registry->create();
         
@@ -42,25 +42,29 @@ namespace
         
         auto& entityTransform = registry->emplace<Transform>(entity);
         entityTransform.position = {0.f, 0.f, 0.f};
-        entityTransform.scale = {1.f, 1.f, 1.f};
-        entityTransform.rotation = {0.f, 0.f, 0.f};
+        entityTransform.scale = {0.1f, 0.1f, 0.1f};
+        entityTransform.rotation = {45.f, 45.f, 45.f};
+
+        auto& shader = registry->emplace<Shader>(entity);
+        shader.vertexShader = "../RocketEngine/Content/Shaders/Shader.vert";
+        shader.fragmentShader = "../RocketEngine/Content/Shaders/Shader.frag";
 
         auto& material = registry->emplace<Material>(entity);
-        material.vertexShader = "../RocketEngine/Content/Shaders/Shader.vert";
-        material.fragmentShader = "../RocketEngine/Content/Shaders/Shader.frag";
+        material.ambient = glm::vec3(1.0f, 0.5f, 0.31f);
+        material.specular = glm::vec3(0.5f, 0.5f, 0.5f);
+        material.diffuse = glm::vec3(1.0f, 0.5f, 0.31f);
+        material.shininess = 32.0f;
     }
 
-    auto makeLight(entt::registry* registry)
+    auto makeLight(entt::registry* registry) -> void
     {
         const auto lightEntity = registry->create();
         
         auto& lightComponent = registry->emplace<Light>(lightEntity);
-        lightComponent.color = {1.f, 1.f, 1.f};
-        lightComponent.ambientStrength = 0.1f;
-        lightComponent.diffuseStrength = 2.f;
-        
-        auto& lightTransform = registry->emplace<Transform>(lightEntity);
-        lightTransform.position = {10.f, 10.f, 0.f};
+        lightComponent.position = glm::vec3(0.0f, 10.0f, 10.0f);
+        lightComponent.ambient = glm::vec3(1.0f, 0.5f, 0.31f);
+        lightComponent.specular = glm::vec3(0.5f, 0.5f, 0.5f);
+        lightComponent.diffuse = glm::vec3(1.0f, 0.5f, 0.31f);
     }
 }
 
@@ -68,19 +72,8 @@ namespace RocketEngine
 {
     auto Scene::instantiate(entt::registry* registry) -> void
     {
-        const auto triangle = registry->create();
-
-        auto& mesh = registry->emplace<StaticMesh>(triangle);
-
-        Vertex a = { {0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f} };
-        Vertex b = { {-0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f} };
-        Vertex c = { {-0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f} };
-
-        mesh.vertices = { a, b, c};
-        mesh.indices = { 0, 1, 2};
-
-        auto& material = registry->emplace<Material>(triangle);
-        material.vertexShader = "../RocketEngine/Content/Shaders/Shader.vert";
-        material.fragmentShader = "../RocketEngine/Content/Shaders/Shader.frag";
+        makeCamera(registry);
+        makeLight(registry);
+        makeObj(registry, "../RocketEngine/Content/Models/cube.obj");
     }
 }

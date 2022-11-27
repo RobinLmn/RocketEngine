@@ -4,9 +4,9 @@
 namespace RocketEngine
 {
     Engine::Engine()
-        : world{}
-        , window{ 800, 800, "RocketEngine" }
-        , renderer{&world}
+        : window{ 800, 800, "RocketEngine" }
+        , world{ &window } 
+        , renderer{ &world }
     {
     }
 
