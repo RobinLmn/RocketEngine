@@ -80,6 +80,51 @@ project "RocketGame"
 		"RocketEngine/ThirdParty/entt/src",
 		"RocketEngine/ThirdParty/spdlog",
 		"RocketEngine/ThirdParty/glad/include",
+		"RocketEngine/ThirdParty/glm",
+	}
+
+	links
+	{
+		"RocketEngine"
+	}
+
+	filter "system:windows"
+		systemversion "10.0"
+
+	filter "configurations:Debug"
+		defines {"ROCKET_DEBUG"}
+		runtime "Debug"
+		symbols "on"
+	
+	filter "configurations:Release"
+		runtime "Release"
+		optimize "on"
+
+project "RocketEditor"
+	location "RocketEditor"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++20"
+	staticruntime "On"
+
+	targetdir ("Build/" .. outputdir .. "/%{prj.name}")
+	objdir ("Intermediate/" .. outputdir .. "/%{prj.name}")
+
+	files
+	{ 
+		"%{prj.name}/Source/**.h",
+		"%{prj.name}/Source/**.cpp",
+		"RocketEngine/ThirdParty/glad/src/glad.c",
+	}
+
+	includedirs
+	{
+		"%{prj.name}/Source",
+		"RocketEngine/Source",
+		"RocketEngine/ThirdParty/entt/src",
+		"RocketEngine/ThirdParty/spdlog",
+		"RocketEngine/ThirdParty/glad/include",
+		"RocketEngine/ThirdParty/glm",
 	}
 
 	links

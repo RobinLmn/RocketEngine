@@ -14,4 +14,6 @@ namespace RocketEngine
         float speed;
         float sensitivity;
     };
+
+    struct CameraDirtyTag {};
 }

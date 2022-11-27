@@ -8,7 +8,7 @@ namespace RocketEngine
 {
     World::World(Window* window)
         : registry{}
-        , scene{}
+        , scenes{}
         , systems{}
         , window{window}
     {
@@ -18,7 +18,10 @@ namespace RocketEngine
 
     auto World::begin() -> void
     {
-        scene.instantiate(&registry);
+        for (auto& scene : scenes)
+        {
+            scene->instantiate(this);
+        }
 
         for (auto& system: systems)
         {
@@ -47,6 +50,11 @@ namespace RocketEngine
         for (auto& system : systems)
         {
             delete system;
+        }
+
+        for (auto& scene : scenes)
+        {
+            delete scene;
         }
     }
 

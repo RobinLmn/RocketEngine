@@ -4,7 +4,7 @@
 namespace RocketEngine
 {
     Engine::Engine()
-        : window{ 800, 800, "RocketEngine" }
+        : window{ 1920, 1080, "RocketEngine" }
         , world{ &window } 
         , renderer{ &world }
     {

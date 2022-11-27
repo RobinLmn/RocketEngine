@@ -102,9 +102,21 @@ namespace RocketEngine
 
     auto ShaderSystem::begin() -> void
     {   
-        for (auto [entity, shader, buffer] : world->getEntities<const Shader, MeshBuffer>())
+        for (auto [entity, shader] : world->getEntities<const Shader>())
         {
+           world->getOrAddComponents<ShaderDirtyTag>(entity);
+        }
+    }
+
+    auto ShaderSystem::update(double dt) -> void
+    {
+        for (auto [entity, shader] : world->getEntities<const Shader, const ShaderDirtyTag>())
+        {
+            auto& buffer = world->getOrAddComponents<MeshBuffer>(entity);
+
             buffer.shader = createShader(shader.vertexShader, shader.fragmentShader);
+
+            world->removeComponents<ShaderDirtyTag>(entity);
         }
     }
 }

@@ -1,11 +1,12 @@
 #pragma once
-#include <entt/entity/registry.hpp>
 
 namespace RocketEngine
 {
-    class Scene final
+    class World;
+
+    class Scene
     {
     public:
-        auto instantiate(entt::registry*) -> void;
+        virtual auto instantiate(World* world) -> void = 0;
     };
 }

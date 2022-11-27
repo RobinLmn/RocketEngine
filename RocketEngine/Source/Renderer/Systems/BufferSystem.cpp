@@ -15,7 +15,7 @@ namespace
 {
 	using namespace RocketEngine;
 
-	auto createBuffer(MeshBuffer& buffer, const StaticMesh& mesh)
+	auto createBuffer(MeshBuffer& buffer, const Mesh& mesh)
 	{
 		glGenVertexArrays(1, &buffer.vao);
 		glGenBuffers(1, &buffer.vbo);
@@ -55,41 +55,57 @@ namespace RocketEngine
 
 	auto BufferSystem::begin() -> void
 	{
-		for (auto [entity, mesh] : world->getEntities<const StaticMesh>())
+		for (auto [entity, mesh] : world->getEntities<const Mesh>())
 		{
-			auto& buffer = world->addComponents<MeshBuffer>(entity);
-			createBuffer(buffer, mesh);
-			buffer.size = mesh.indices.size();
+			world->getOrAddComponents<MeshDirtyTag>(entity);
 		}
-		
+
 		for (auto [entity, transform] : world->getEntities<const Transform>())
 		{
-			world->addComponents<ObjectBuffer>(entity);
+			world->getOrAddComponents<TransformDirtyTag>(entity);
 		}
 
 		for (auto [entity, camera] : world->getEntities<const Camera>())
 		{
-			world->addComponents<CameraBuffer>(entity);
+			world->getOrAddComponents<CameraDirtyTag>(entity);
 		}
 	}
 
 	auto BufferSystem::update(double dt) -> void
 	{
-		for (auto [entity, transform, buffer] : world->getEntities<const Transform, ObjectBuffer>())
+		for (auto [entity, mesh] : world->getEntities<const Mesh, MeshDirtyTag>())
 		{
+			auto& buffer = world->getOrAddComponents<MeshBuffer>(entity);
+
+			createBuffer(buffer, mesh);
+			buffer.size = mesh.indices.size();
+
+			world->removeComponents<MeshDirtyTag>(entity);
+		}
+
+		for (auto [entity, transform] : world->getEntities<const Transform, const TransformDirtyTag>())
+		{
+			auto& buffer = world->getOrAddComponents<ObjectBuffer>(entity);
+
 			buffer.model = glm::mat4(1.0f);
 			buffer.model = glm::translate(buffer.model, transform.position);
 			buffer.model = glm::rotate(buffer.model, glm::radians(transform.rotation.x), glm::vec3(1.f, 0.f, 0.f));
 			buffer.model = glm::rotate(buffer.model, glm::radians(transform.rotation.y), glm::vec3(0.f, 1.f, 0.f));
 			buffer.model = glm::rotate(buffer.model, glm::radians(transform.rotation.z), glm::vec3(0.f, 0.f, 1.f));
 			buffer.model = glm::scale(buffer.model, transform.scale);
+
+			world->removeComponents<TransformDirtyTag>(entity);
 		}
 
-		for (auto [entity, camera, objectBuffer, buffer] : world->getEntities<const Camera, const ObjectBuffer, CameraBuffer>())
+		for (auto [entity, camera, objectBuffer] : world->getEntities<const Camera, const ObjectBuffer, const CameraDirtyTag>())
 		{
+			auto& buffer = world->getOrAddComponents<CameraBuffer>(entity);
+
 			const auto projection = glm::perspective(glm::radians(camera.fov), camera.aspect, camera.near, camera.far);
 			const auto view = objectBuffer.model;
 			buffer.viewProjection = projection * view;
+
+			world->removeComponents<CameraDirtyTag>(entity);
 		}
 	}
 

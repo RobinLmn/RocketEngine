@@ -17,4 +17,6 @@ namespace RocketEngine
 		glm::vec3 specular;
 		float shininess;
 	};
+
+	struct ShaderDirtyTag {};
 }

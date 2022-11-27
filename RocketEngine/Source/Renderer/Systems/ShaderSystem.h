@@ -12,5 +12,6 @@ namespace RocketEngine
 
     public:
         virtual auto begin() -> void override;
+        virtual auto update(double dt) -> void override;
     };
 }

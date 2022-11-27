@@ -11,8 +11,9 @@ namespace RocketEngine
     
     public:
         virtual auto begin() -> void override;
+        virtual auto update(double dt) -> void override;
         
     private:
-        auto loadMesh(StaticMesh& mesh, const char* path) -> void;
+        auto loadMesh(Mesh& mesh, const char* path) -> void;
     };
 }

@@ -19,12 +19,21 @@ namespace RocketEngine
     {
         for (auto [entity, pathComponent] : world->getEntities<const Model>())
         {
-            auto& mesh = world->addComponents<StaticMesh>(entity);
-            loadMesh(mesh, pathComponent.path.c_str());
+            world->getOrAddComponents<ModelDirtyTag>(entity);
         }
     }
 
-    auto MeshLoadingSystem::loadMesh(StaticMesh& mesh, const char* path) -> void
+    auto MeshLoadingSystem::update(double dt) -> void
+    {
+        for (auto [entity, pathComponent] : world->getEntities<const Model, const ModelDirtyTag>())
+        {
+            auto& mesh = world->getOrAddComponents<Mesh>(entity);
+            loadMesh(mesh, pathComponent.path.c_str());
+            world->getOrAddComponents<MeshDirtyTag>(entity);
+        }
+    }
+
+    auto MeshLoadingSystem::loadMesh(Mesh& mesh, const char* path) -> void
     {
         tinyobj::ObjReaderConfig readerConfig;
         readerConfig.mtl_search_path = "../RocketEngine/Content/Models";

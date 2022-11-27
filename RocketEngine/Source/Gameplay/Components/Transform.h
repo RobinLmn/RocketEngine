@@ -10,4 +10,6 @@ namespace RocketEngine
         glm::vec3 scale;
         glm::vec3 rotation;
     };
+
+    struct TransformDirtyTag {};
 }

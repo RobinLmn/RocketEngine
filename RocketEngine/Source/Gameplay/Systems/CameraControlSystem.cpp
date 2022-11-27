@@ -26,6 +26,9 @@ namespace RocketEngine
             if (world->isKeyPressed(GLFW_KEY_S)) transform.position.z -= camera.speed * dt * 20.f;
             if (world->isKeyPressed(GLFW_KEY_LEFT_SHIFT)) transform.position.y += camera.speed * dt;
             if (world->isKeyPressed(GLFW_KEY_SPACE)) transform.position.y -= camera.speed * dt;
+
+            world->getOrAddComponents<TransformDirtyTag>(entity);
+            world->getOrAddComponents<CameraDirtyTag>(entity);
         }
     }
 }

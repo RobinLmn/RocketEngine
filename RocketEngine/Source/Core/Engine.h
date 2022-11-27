@@ -13,6 +13,12 @@ namespace RocketEngine
 
 	public:
 		auto run() -> void;
+		
+		template<typename T_Scene>
+		auto inline addScene() -> void
+		{
+			world.addScene<T_Scene>();
+		}
 
 	private:
 		Window window;

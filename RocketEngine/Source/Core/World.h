@@ -19,6 +19,9 @@ namespace RocketEngine
         auto update(double dt) -> void;
         auto end() -> void;
 
+        auto inline isKeyPressed(int key) -> bool { return window->isKeyPressed(key); }
+        auto inline getAspectRatio() -> float { return window->getAspectRatio(); }
+
         template<typename... T_Component>
         [[nodiscard]] decltype(auto) inline getEntities()
         {
@@ -26,21 +29,35 @@ namespace RocketEngine
         }
 
         template<typename... T_Component>
-        decltype(auto) inline addComponents(entt::registry::entity_type entity)
+        auto inline getOrAddComponents(entt::registry::entity_type entity) -> decltype(auto)
         {
-            return registry.emplace<T_Component...>(entity);
+            return registry.get_or_emplace<T_Component...>(entity);
         }
 
-        auto inline isKeyPressed(int key) -> bool { return window->isKeyPressed(key); }
-        auto inline getAspectRatio() -> bool { return window->getAspectRatio(); }
-            
+        template<typename... T_Component>
+        auto inline removeComponents(entt::registry::entity_type entity) -> void
+        {
+            registry.remove<T_Component...>(entity);
+        }
+
+        auto inline spawnEntity() -> decltype(auto)
+        {
+            return registry.create();
+        }
+           
+        template<typename T_Scene>
+        auto addScene() -> void
+        {
+            scenes.push_back(new T_Scene{});
+        }
+
     private:
         template<typename T_System>
         auto addSystem() -> void;
         
     private:
         entt::registry registry;
-        Scene scene;
+        std::vector<Scene*> scenes;
         std::vector<System*> systems;
 
         // hacky! fix

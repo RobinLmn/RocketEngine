@@ -13,7 +13,7 @@ namespace RocketEngine
         glm::vec3 color;
     };
 
-    struct StaticMesh
+    struct Mesh
     {
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;
@@ -23,4 +23,7 @@ namespace RocketEngine
     {
         std::string path;
     };
+
+    struct MeshDirtyTag {};
+    struct ModelDirtyTag {};
 }
