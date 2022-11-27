@@ -5,7 +5,7 @@ namespace RocketEngine
 {
     Engine::Engine()
         : window{ 1920, 1080, "RocketEngine" }
-        , world{ &window } 
+        , world{} 
         , renderer{ &world }
     {
     }
@@ -33,5 +33,31 @@ namespace RocketEngine
 
         renderer.end();
         world.end();
+    }
+
+    auto Engine::get() -> Engine&
+    {
+        static Engine engine{};
+        return engine;
+    }
+
+    auto Engine::isKeyPressed(int key) const -> bool
+    {
+        return window.isKeyPressed(key);
+    }
+
+    auto Engine::getAspectRatio() const -> float
+    {
+        return window.getAspectRatio();
+    }
+
+    auto Engine::getNativeWindow() -> GLFWwindow*
+    {
+        return window.getNativeWindow();
+    }
+
+    auto Engine::pushRenderCallback(std::function<void()> callback) -> void
+    {
+        renderer.pushRenderCallback(callback);
     }
 }

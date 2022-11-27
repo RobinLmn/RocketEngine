@@ -14,6 +14,11 @@
 #include <vector>
 #include <glm/gtc/type_ptr.hpp>
 
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+#include <glfw/glfw3.h>
+
 namespace
 {
 	using namespace RocketEngine;
@@ -90,6 +95,11 @@ namespace RocketEngine
 			glBindVertexArray(meshBuffer.vao);
 			glDrawElements(GL_TRIANGLES, (GLsizei)meshBuffer.size, GL_UNSIGNED_INT, 0);
 		}
+
+		for (auto& callback : renderCallbacks)
+		{
+			callback();
+		}
 	}
 
 	template<typename T_System>
@@ -104,6 +114,11 @@ namespace RocketEngine
 		{
 			system->end();
 		}
+	}
+
+	auto Renderer::pushRenderCallback(std::function<void()> callback) -> void
+	{
+		renderCallbacks.emplace_back(callback);
 	}
 
 	Renderer::~Renderer()

@@ -10,6 +10,7 @@ workspace "RocketEngine"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 include "RocketEngine/ThirdParty/glfw"
+include "RocketEngine/ThirdParty/ImGui"
 
 project "RocketEngine"
 	location "RocketEngine"
@@ -37,6 +38,7 @@ project "RocketEngine"
 		"%{prj.name}/ThirdParty/entt/src",
 		"%{prj.name}/ThirdParty/tinyobjloader",
 		"%{prj.name}/ThirdParty/glad/include",
+		"%{prj.name}/ThirdParty/ImGui",
 	}
 
 	links
@@ -125,11 +127,14 @@ project "RocketEditor"
 		"RocketEngine/ThirdParty/spdlog",
 		"RocketEngine/ThirdParty/glad/include",
 		"RocketEngine/ThirdParty/glm",
+		"RocketEngine/ThirdParty/ImGui",
+		"RocketEngine/ThirdParty/glfw/include",
 	}
 
 	links
 	{
-		"RocketEngine"
+		"RocketEngine",
+		"ImGui"
 	}
 
 	filter "system:windows"

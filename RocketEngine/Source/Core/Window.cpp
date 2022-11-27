@@ -39,16 +39,21 @@ namespace RocketEngine
 		glfwPollEvents();
 	}
 
-	auto Window::isKeyPressed(int key) -> bool
+	auto Window::isKeyPressed(int key) const -> bool
 	{
 		return glfwGetKey(window, key) == GLFW_PRESS;
 	}
 
-	auto Window::getAspectRatio() -> float
+	auto Window::getAspectRatio() const -> float
 	{
 		int width, height;
 		glfwGetWindowSize(window, &width, &height);
 		return (float)width / (float)height;
+	}
+
+	auto Window::getNativeWindow() -> GLFWwindow*
+	{
+		return window;
 	}
 
 	Window::~Window()

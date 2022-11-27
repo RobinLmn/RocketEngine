@@ -12,8 +12,9 @@ namespace RocketEngine
 		auto isOpen() const -> bool;
 		auto processInput() -> void;
 
-		auto isKeyPressed(int key) -> bool;
-		auto getAspectRatio() -> float;
+		auto isKeyPressed(int key) const -> bool;
+		auto getAspectRatio() const -> float;
+		[[nodiscard]] auto getNativeWindow() -> GLFWwindow*;
 
 	private:
 		GLFWwindow* window;

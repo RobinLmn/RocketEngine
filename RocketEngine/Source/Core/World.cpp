@@ -6,14 +6,13 @@
 
 namespace RocketEngine
 {
-    World::World(Window* window)
+    World::World()
         : registry{}
         , scenes{}
         , systems{}
-        , window{window}
     {
-        addSystem<CameraControlSystem>();
-        addSystem<MeshLoadingSystem>();
+        pushSystem<CameraControlSystem>();
+        pushSystem<MeshLoadingSystem>();
     }
 
     auto World::begin() -> void
@@ -56,11 +55,5 @@ namespace RocketEngine
         {
             delete scene;
         }
-    }
-
-    template<typename T_System>
-    auto World::addSystem() -> void
-    {
-        systems.push_back(new T_System{ this });
     }
 }

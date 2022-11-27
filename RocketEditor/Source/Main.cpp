@@ -6,8 +6,8 @@
 int main()
 {
 	RocketEngine::Log::Initialize();
-	RocketEngine::Engine engine{};
 
-	engine.addScene<RocketGame::Scene>();
+	auto& engine = RocketEngine::Engine::get();
+	engine.pushScene<RocketEditor::Scene>();
 	engine.run();
 }

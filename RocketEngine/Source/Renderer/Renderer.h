@@ -2,6 +2,7 @@
 
 #include <Core/System.h>
 #include <vector>
+#include <functional>
 
 namespace RocketEngine
 {
@@ -17,6 +18,7 @@ namespace RocketEngine
 		auto begin() -> void;
 		auto draw(double dt) -> void;
 		auto end() -> void;
+		auto pushRenderCallback(std::function<void()> callback) -> void;
 
 	private:
 		template<typename T_System>
@@ -25,5 +27,6 @@ namespace RocketEngine
 	private:
 		World* world;
 		std::vector<System*> systems;
+		std::vector<std::function<void()>> renderCallbacks;
 	};
 }

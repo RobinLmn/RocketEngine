@@ -11,16 +11,13 @@ namespace RocketEngine
     class World final
     {
     public:
-        World(Window* window);
+        World();
         ~World();
 
     public:
         auto begin() -> void;
         auto update(double dt) -> void;
         auto end() -> void;
-
-        auto inline isKeyPressed(int key) -> bool { return window->isKeyPressed(key); }
-        auto inline getAspectRatio() -> float { return window->getAspectRatio(); }
 
         template<typename... T_Component>
         [[nodiscard]] decltype(auto) inline getEntities()
@@ -46,21 +43,20 @@ namespace RocketEngine
         }
            
         template<typename T_Scene>
-        auto addScene() -> void
+        auto pushScene() -> void
         {
             scenes.push_back(new T_Scene{});
         }
 
-    private:
         template<typename T_System>
-        auto addSystem() -> void;
-        
+        auto pushSystem() -> void
+        {
+            systems.push_back(new T_System{ this });
+        }
+
     private:
         entt::registry registry;
         std::vector<Scene*> scenes;
         std::vector<System*> systems;
-
-        // hacky! fix
-        Window* window;
     };
 }

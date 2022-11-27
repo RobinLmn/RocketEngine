@@ -2,7 +2,7 @@
 
 #include <Gameplay/Scene.h>
 
-namespace RocketGame
+namespace RocketEditor
 {
     class RocketEngine::World;
 
